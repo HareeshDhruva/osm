@@ -57,10 +57,10 @@ const ProfilePhotoUpdate = ({ open, setOpen, mode }) => {
                 <CloseIcon className="text-[white]" />
               </IconButton>
             </DialogTitle>
-            {Admin && Admin.profileUrl.url !== null ? (
+            {Admin && Admin?.profileUrl?.url !== null ? (
               <img
                 className="block mx-auto ring-4 rounded-[50%] h-[8rem] ring-gray-500"
-                src={Admin.profileUrl.url}
+                src={Admin?.profileUrl?.url}
                 alt=""
               />
             ) : (

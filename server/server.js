@@ -23,6 +23,7 @@ const {
   updateUser,
   updateProfilePhoto,
   searchUser,
+  removeFriend
 } = require("./controllers/users");
 const userAuth = require("./middleware");
 const {
@@ -79,6 +80,7 @@ app.post("/acceptFriendRequest", userAuth, acceptfriendRequest);
 app.post("/profileView", userAuth, profileView); //not
 app.post("/suggested", userAuth, suggested);
 app.post("/searchUser", searchUser);
+app.post("/deleteFriend",userAuth,removeFriend)
 
 app.get("/", getPost);
 app.post("/create-post", userAuth, createPost);

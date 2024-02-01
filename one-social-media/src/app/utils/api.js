@@ -220,4 +220,14 @@ export const deletePost = async(id) => {
       })
   }
 
+  export const deleteFriend = async(data) => {
+    const res =  await axios.post(`${URL}/deleteFriend`,{
+          data:data,
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token ? `Bearer ${token}` : "",
+          },
+      })
+      return res.data.message;
+  }
 

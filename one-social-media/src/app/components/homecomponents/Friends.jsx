@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { FaUserXmark } from "react-icons/fa6";
-import { adminData, deletePost, getUser, getUserPost } from "@/app/utils/api";
+import { adminData, deleteFriend, deletePost, getUser, getUserPost } from "@/app/utils/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -65,6 +65,18 @@ const Friends = () => {
     deletepost.mutate(id);
   };
 
+  const deletfriend = useMutation({
+    mutationFn: (userid) => deleteFriend(userid),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["Admin"] });
+      console.log("remove success");
+    },
+  });
+
+  const deleteFriendCall=(id)=>{
+    deletfriend.mutate(id)
+  }
+
   return (
     <>
       {
@@ -104,7 +116,7 @@ const Friends = () => {
                         </p>
                       </div>
                       <div className="text-[1.5rem] max-lg:text-[0.8rem] mx-2">
-                        <FaUserXmark />
+                        <FaUserXmark onClick={()=>deleteFriendCall(friend._id)} />
                       </div>
                     </div>
                   ))}

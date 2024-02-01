@@ -66,7 +66,7 @@ const sendfriendRequest = async (req, res, next) => {
     });
 
     if (existRequest) {
-      res.status(201).json({ message: "You Have Alredy Sent Request" });
+      res.status(201).json({ message: "You Have Alredy Sent Request" ,data:existRequest.status});
       return;
     }
 
@@ -76,7 +76,7 @@ const sendfriendRequest = async (req, res, next) => {
     });
 
     if (accountExist) {
-      res.status(201).json({ message: "You Have Alredy Received Request" });
+      res.status(201).json({ message: "You Have Alredy Received Request",data:accountExist.status });
       return;
     }
 
@@ -203,6 +203,35 @@ const searchUser = async (req, res) => {
   }
 };
 
+const removeFriend = async (req, res) => {
+  try {
+    const userId = req.body.user.userId;
+    const friendIdToRemove = req.body.data;
+    await FriendRequest.findOneAndDelete({requestTo:friendIdToRemove,requestFrom:userId});
+    const currentUser = await User.findById(userId);
+    const friendIndex = currentUser.friends.indexOf(friendIdToRemove);
+    if (friendIndex !== -1) {
+      currentUser.friends.splice(friendIndex, 1);
+      await currentUser.save();
+      const friendUser = await User.findById(friendIdToRemove);
+      const currentUserIndexInFriend = friendUser.friends.indexOf(userId);
+      if (currentUserIndexInFriend !== -1) {
+        friendUser.friends.splice(currentUserIndexInFriend, 1);
+        await friendUser.save();
+        return res.status(200).json({ message: "Friend removed successfully" });
+      } else {
+        return res.status(404).json({ message: "User not found in friend's friend list" });
+      }
+    } else {
+      return res.status(404).json({ message: "Friend not found in user's friend list" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
 module.exports = {
   getUser,
   sendfriendRequest,
@@ -213,4 +242,5 @@ module.exports = {
   updateUser,
   updateProfilePhoto,
   searchUser,
+  removeFriend,
 };

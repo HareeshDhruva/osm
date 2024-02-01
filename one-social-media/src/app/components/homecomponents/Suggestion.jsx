@@ -18,9 +18,6 @@ import { useSnackbar } from "notistack";
 
 const Suggestion = () => {
   const queryClient = useQueryClient();
-  const [id, setId] = useState("");
-
-  const newData = { requestId: id };
   const { data: SuggestionData } = useQuery({
     queryKey: ["suggestion"],
     queryFn: suggestionMode,
@@ -29,15 +26,15 @@ const Suggestion = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const RequestMutation = useMutation({
-    mutationFn: () => sendFriendRequestMod(newData),
+    mutationFn: (newData) => sendFriendRequestMod(newData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["suggestion"] });
     },
   });
 
   const sendRequest = (id) => {
-    setId(id);
-    RequestMutation.mutate();
+    const newData = { requestId: id };
+    RequestMutation.mutate(newData);
     console.log(RequestMutation.data);
     const newMessage = RequestMutation.data;
     if (newMessage === undefined) {

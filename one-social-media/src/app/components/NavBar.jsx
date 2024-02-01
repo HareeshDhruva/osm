@@ -142,7 +142,7 @@ const NavBar = () => {
                 onClick={(e) => userWindowHandle(Admin?._id)}
                 arrow
               >
-                <Avatar src={Admin?.profileUrl.url} />
+                <Avatar src={Admin?.profileUrl?.url} />
               </Tooltip>
             </div>
             <button
