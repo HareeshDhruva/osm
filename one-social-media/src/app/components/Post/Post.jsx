@@ -115,7 +115,7 @@ const Post = () => {
   };
 
   const usePost = useMutation({
-    mutationFn: (userid) => getUserPost(userid),
+    mutationFn: (newid) => getUserPost(newid),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userPost"] });
     },
@@ -204,17 +204,17 @@ const Post = () => {
         </div>
         <div className=" h-[80dvh] overflow-y-scroll text-white">
           <div className="max-w-[600px] overflow-hidden">
-            {Post?.map((userPost) => (
+            {Post?.map((users) => (
               <div className="flex flex-col gap-5 text-center my-2">
                 <div
                   className="flex items-center gap-5 flex-start justify-between w-[90%] m-auto"
-                  onClick={(e) => userWindowHandle(userPost.userId._id)}
+                  onClick={(e) => userWindowHandle(users?.userId?._id)}
                 >
                   <div className="flex gap-5 items-center">
-                    {userPost.userId.profileUrl ? (
+                    {users?.userId?.profileUrl ? (
                       <img
                         className="ring-1 ring-gray-500 rounded-full w-6"
-                        src={userPost.userId.profileUrl.url}
+                        src={users?.userId?.profileUrl?.url}
                       />
                     ) : (
                       <img
@@ -223,9 +223,9 @@ const Post = () => {
                       />
                     )}
                     <p>
-                      {userPost.userId.firstname +
+                      {users.userId.firstname +
                         " " +
-                        userPost.userId.lastname}
+                        users.userId.lastname}
                     </p>
                   </div>
                   <div className="mr-4">
@@ -233,40 +233,40 @@ const Post = () => {
                   </div>
                 </div>
                 <div>
-                  {userPost.image !== null && (
+                  {users.image && (
                     <img
-                      onClick={(e) => handleOpen(userPost._id)}
+                      onClick={(e) => handleOpen(users._id)}
                       className="block cover"
-                      src={userPost.image.url}
+                      src={users.image.url}
                       alt="profile"
                     />
                   )}
                   <div className="p-2 flex gap-5">
-                    <LikeDislike like={userPost.likes} id={userPost._id} />
+                    <LikeDislike like={users.likes} id={users._id} />
                   </div>
                   <div className="flex items-start flex-col gap-2 mx-6">
                     <p>
                       <span className="font-bold">
                         {"@ " +
-                          userPost.userId.firstname +
+                          users.userId.firstname +
                           "_" +
-                          userPost.userId.lastname}
+                          users.userId.lastname}
                       </span>
                       <span className="font-[100] ml-1">
-                        {" " + userPost.description}
+                        {" " + users.description}
                       </span>
                     </p>
-                    {userPost.comments.length !== 0 && (
+                    {users.comments.length !== 0 && (
                       <p
                         className="cursor-pointer font-[100]"
-                        onClick={(e) => handleOpen(userPost._id)}
+                        onClick={(e) => handleOpen(users._id)}
                       >
-                        View all {userPost.comments.length} comments .....{" "}
+                        View all {users.comments.length} comments .....{" "}
                       </p>
                     )}
                     <Comment open={open} setOpen={handleClose} id={id} />
                   </div>
-                  <PostInput uid={userPost._id} />
+                  <PostInput uid={users._id} />
                 </div>
               </div>
             ))}
