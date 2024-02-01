@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <title>confirmation</title>
+    <style>
+      body {
+        background-color: #ffff;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        box-shadow: 0 60px 80px rgba(0, 0, 0, 0.6),
+          0 45px 26px rgba(0, 0, 0, 0.14);
+        background-color: #ffffff;
+        border-radius: 5px;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      p {
+        color: #666;
+      }
+
+      .confirmation-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #ffff;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+
+      .failure {
+        display: none;
+      }
+
+      .confirmation-button:hover {
+        background-color: #0056b3;
+      }
+      h1,
+      p,
+      a {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="resultsuccess" class="container">
+      <h1>Email Confirmation Success</h1>
+      <p>
+        Thank you for signing up! Please click the button below to confirm your
+        email address:
+      </p>
+      <a href="https://osm-beta.vercel.app" class="confirmation-button"
+        >Login</a
+      >
+    </div>
+
+    <div id="resultfail" class="container">
+      <h1>Email Confirmation Fail</h1>
+      <p>somethis went wrong! Request foe new Confirmation mail address</p>
+      <a href="https://osm-beta.vercel.app" class="confirmation-button"
+        >Re-try</a
+      >
+    </div>
+    <script>
+      function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+      const fail = document.getElementById("resultfail");
+      const succ = document.getElementById("resultsuccess");
+      const successParam = getUrlParameter("status");
+
+      if (successParam === "success") {
+        fail.classList.add("failure");
+        setTimeout(() => {
+          window.location.replace("https://osm-beta.vercel.app");
+        }, 1000);
+      } else {
+        succ.classList.add("failure");
+        setTimeout(() => {
+          window.location.replace("https://osm-beta.vercel.app");
+        }, 1000);
+      }
+    </script>
+  </body>
+</html>
