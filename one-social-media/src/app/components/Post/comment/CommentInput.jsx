@@ -6,7 +6,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 const CommentInput = ({ uid }) => {
   const [comment, setComment] = useState("");
   const { data: Admin } = useQuery({ queryKey: ["Admin"], queryFn: adminData });
-  const url = Admin?.profileUrl.url;
+  const url = Admin?.profileUrl?.url;
   const from = Admin?.firstname + " " + Admin?.lastname;
 
   const handleChangeComment = (e) => {
