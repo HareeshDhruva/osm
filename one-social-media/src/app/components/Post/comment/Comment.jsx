@@ -57,12 +57,12 @@ const Comment = ({ open, setOpen, id }) => {
                   <img src={commentList.image.url} alt="profile" />
                 </div>
                 <div className="overflow-scroll md:h-[80vh] max-md:h-[20rem] w-1/2 max-md:w-full max-md:m-4">
-                  {commentList.comments.map((comments) => (
+                  {commentList?.comments?.map((comments) => (
                     <List>
                       <ListItem button>
                         <div className="w-[100%]">
                           <AvatarBlock
-                            url={comments.userId.profileUrl.url}
+                            url={comments?.userId?.profileUrl?.url}
                             data={
                               "@ " +
                               comments.userId.firstname +

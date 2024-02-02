@@ -9,7 +9,6 @@ const token =
 const URL = process.env.NEXT_PUBLIC_BACKEND;
 
 const UploadComponent = ({ name, description }) => {
-  
   const context = useContext(UserContest);
   const queryClient = useQueryClient();
   const image = context.photo;
@@ -56,15 +55,15 @@ const UploadComponent = ({ name, description }) => {
   };
 
   return (
-    <>
+    <div className="bg-glack">
       <Button
-        variant="contained"
-        sx={{ border: "1px solid #fff" }}
+        variant="outlined"
+        sx={{ border: "1px solid #fff", bgcolor: "black" }}
         onClick={handleUpload}
       >
-        <p className="max-md:text-[0.5rem]">Upload</p>
+        <p className="max-md:text-[0.5rem] text-[#fff]">Upload</p>
       </Button>
-    </>
+    </div>
   );
 };
 

@@ -7,7 +7,7 @@ const AvatarBlock = ({ url, data }) => {
       <div className="flex gap-3 items-center justify-between rounded-3xl">
         <div className="flex items-center ring-1 ring-gray-500 rounded-3xl">
           <Avatar sizes="small" className="ring-1 ring-gray-500" src={url} />
-          <p className="text-[#fff] mx-8 my-2 font-bold max-md:text-[0.7rem] ">
+          <p className="text-[#fff] mx-2 my-2 font-bold max-md:text-[0.7rem] ">
             {data}
           </p>
         </div>

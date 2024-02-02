@@ -31,7 +31,9 @@ const passworsReset = async (req, res) => {
             if (isMatch) {
               await User.findOne({ _id: userId })
                 .then((user) => {
-                  res.redirect(`/user/password-reset?_id=${userId}`);
+                  if(user){
+                    res.redirect(`/user/password-reset?_id=${userId}`);
+                  }
                 })
                 .catch((error) => {
                   res.redirect(`/user/password-reset?status=fail`);

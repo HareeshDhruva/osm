@@ -14,6 +14,7 @@ import Slider from "@mui/material/Slider";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import UploadComponent from "@/app/utils/cloud";
+import { useSnackbar } from "notistack";
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -44,6 +45,7 @@ export default function ImageCrop({ mode }) {
   const [description, setDescription] = useState("");
 
   const context = useContext(UserContest);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleOnChange = (e) => {
     setDescription(e.target.value);
@@ -115,22 +117,39 @@ export default function ImageCrop({ mode }) {
     });
 
     const formData = new FormData();
+
     formData.append("file", file);
     formData.append("upload_preset", "SocilaMedia");
+
     try {
       const response = await axios.post(
         `https://api.cloudinary.com/v1_1/sociladb/image/upload`,
         formData
       );
-      console.log("Upload success:", response.data.url);
-      context.setPhoto(response.data);
-      const url = response.data.url;
-      const public_id = response.data.public_id;
-      const data = {url,public_id}
-      context.setPhoto(data);
-      context.setActiveStep(3);
+      if (response.status == 200) {
+        enqueueSnackbar("Crop Success", {
+          autoHideDuration: 3000,
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "center",
+          },
+        });
+        const url = response.data.url;
+        const public_id = response.data.public_id;
+        const data = { url, public_id };
+        context.setPhoto(data);
+        context.setActiveStep(3);
+      }
     } catch (error) {
-      console.error("Upload error:", error);
+      enqueueSnackbar(error.response.data.error.message, {
+        autoHideDuration: 3000,
+        variant: "error",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "center",
+        },
+      });
     }
     handleLoading();
   }
@@ -168,10 +187,7 @@ export default function ImageCrop({ mode }) {
     width: 1,
   });
 
-  const StyledButton = styled(Button)``;
-
   //loading
-
   const handleLoading = () => {
     setLoading(false);
   };
@@ -194,34 +210,52 @@ export default function ImageCrop({ mode }) {
           />
         </div>
       )}
-      <div className="App flex justify-center items-center md:flex-row-reverse max-md:flex-col">
-        <div className="w-1/2 flex justify-around flex-col">
-          <div>
-            <div className="flex justify-center font-semibold md:my-5 ">
-              <Button
-                component="label"
-                variant="outlined"
-                sx={{ border: "1px solid #fff" }}
-                startIcon={<CloudUploadIcon sx={{ color: "#fff" }} />}
-              >
-                <p className="max-md:text-[0.5rem] text-[#fff]">Upload file</p>
-                <VisuallyHiddenInput type="file" onChange={onSelectFile} />
-              </Button>
-            </div>
+      <div className="App flex justify-center items-center">
+        <div className="w-1/2 justify-center items-center">
+          <div className="flex justify-center font-semibold md:my-5 ">
+            <Button
+              component="label"
+              variant="outlined"
+              sx={{ border: "1px solid #fff" }}
+              startIcon={<CloudUploadIcon sx={{ color: "#fff" }} />}
+            >
+              <p className="max-md:text-[0.5rem] text-[#fff]">Upload file</p>
+              <VisuallyHiddenInput type="file" onChange={onSelectFile} />
+            </Button>
           </div>
 
-          {/* leftpart */}
+          {!!imgSrc && (
+            <div className="flex justify-center items-center m-10">
+              <ReactCrop
+                crop={crop}
+                onChange={(_, percentCrop) => setCrop(percentCrop)}
+                onComplete={(c) => setCompletedCrop(c)}
+                aspect={aspect}
+                minHeight={100}
+                className="outline outline-2 outline-offset-2"
+              >
+                <img
+                  className="md:h-[40vh]"
+                  ref={imgRef}
+                  alt="Crop me"
+                  src={imgSrc}
+                  style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                  onLoad={onImageLoad}
+                />
+              </ReactCrop>
+            </div>
+          )}
 
           {!!completedCrop && (
             <div className="flex flex-col gap-5">
               <div className="flex justify-center items-center">
                 <canvas
-                  className="outline outline-4 outline-offset-2 h-[40vh] max-h-[30vh] max-md:hidden"
+                  className="outline outline-4 outline-offset-2 h-[40vh] max-h-[30vh] hidden"
                   ref={previewCanvasRef}
                 />
               </div>
               {/* new */}
-              <div className="flex justify-center font-semibold max-md:hidden">
+              <div className="justify-center font-semibold hidden">
                 <Box sx={{ width: 300 }}>
                   <Slider
                     disabled={!imgSrc}
@@ -238,7 +272,7 @@ export default function ImageCrop({ mode }) {
                 </Box>
               </div>
 
-              <div className="flex justify-center font-semibold max-md:hidden">
+              <div className=" justify-center font-semibold hidden">
                 <Box sx={{ width: 300 }}>
                   <Slider
                     id="rotate-input"
@@ -260,40 +294,20 @@ export default function ImageCrop({ mode }) {
                   />
                 </Box>
               </div>
-              <div className="flex justify-evenly items-center gap-5">
+              <div className="flex justify-center items-center md:gap-10 max-md:flex-col gap-5">
                 <Button
-                  variant="contained"
-                  sx={{ border: "1px solid #fff" }}
+                  variant="outlined"
+                  sx={{ border: "1px solid #fff", bgcolor: "black" }}
                   onClick={onDownloadCropClick}
                 >
-                  <p className="max-md:text-[0.5rem]">Crop</p>
+                  <p className="max-md:text-[0.5rem] text-[#fff]">Crop</p>
                 </Button>
                 <UploadComponent name={mode} description={description} />
               </div>
             </div>
           )}
         </div>
-        {!!imgSrc && (
-          <div className="md:w-1/2 flex justify-center items-center m-10">
-            <ReactCrop
-              crop={crop}
-              onChange={(_, percentCrop) => setCrop(percentCrop)}
-              onComplete={(c) => setCompletedCrop(c)}
-              aspect={aspect}
-              minHeight={100}
-              className="outline outline-2 outline-offset-2"
-            >
-              <img
-                className="h-[40vh] max-h-[50vh] max-md:w-auto"
-                ref={imgRef}
-                alt="Crop me"
-                src={imgSrc}
-                style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
-                onLoad={onImageLoad}
-              />
-            </ReactCrop>
-          </div>
-        )}
+
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={loading}

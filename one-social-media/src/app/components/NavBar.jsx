@@ -24,7 +24,7 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
-import axios from "axios"
+import axios from "axios";
 
 const NavBar = () => {
   const [userid, setUserId] = useState("");
@@ -33,14 +33,18 @@ const NavBar = () => {
   const [mini, setMini] = useState(false);
 
   const onLogout = async () => {
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/logout`,{},{
-      withCredentials:true
-    })
-    if(res.status === 200){
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKEND}/logout`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    if (res.status === 200) {
       localStorage.clear();
-      window.location.replace('/')
+      window.location.replace("/");
     }
-  }
+  };
 
   //user
   const { data: Admin } = useQuery({ queryKey: ["Admin"], queryFn: adminData });
@@ -108,10 +112,10 @@ const NavBar = () => {
       <div className="flex h-20 justify-between md:gap-5 items-center md:mx-4">
         <div className="mx-5 max-md:mx-1">
           <Link href="/home">
-            <img src="osm-white.png" className="max-md:w-8 w-20" />
+            <img src="osm-white.png" className="max-md:w-14 w-20" />
           </Link>
         </div>
-        <div className="flex items-center max-md:text-[0.5rem] text-[0.9rem]">
+        <div className="flex items-center max-md:text-[0.7rem] text-[0.9rem]">
           <button
             type="submit"
             className="py-2 px-2 rounded-3xl text-white font-bold "
@@ -245,7 +249,12 @@ const NavBar = () => {
                                 <div className="flex items-center w-[80%] justify-between mt-2">
                                   <DeleteIcon
                                     className="text-[#fff] text-[1rem]"
-                                    onClick={() => deletePostId(post._id,post.image.public_id)}
+                                    onClick={() =>
+                                      deletePostId(
+                                        post._id,
+                                        post.image.public_id
+                                      )
+                                    }
                                   />
                                   <div className="flex items-center gap-1">
                                     <FavoriteIcon className="text-[#fff] text-[1rem]" />

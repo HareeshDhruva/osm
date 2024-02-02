@@ -44,7 +44,7 @@ const ProfileCard = () => {
               >
                 <img
                   className="block mx-auto ring-4 rounded-[50%] h-[8rem] ring-gray-500 my-4"
-                  src={Admin.profileUrl.url}
+                  src={Admin?.profileUrl?.url}
                   alt=""
                 />
               </Tooltip>

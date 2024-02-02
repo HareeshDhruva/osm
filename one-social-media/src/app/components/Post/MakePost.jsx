@@ -44,12 +44,14 @@ const MakePost = ({ open, setPostOpen, mode }) => {
           >
             {mode}
           </Typography>
-          <Box sx={{ width: "90%" }}>
+          <Box sx={{ width: "90%", bgcolor: "black" }}>
             <Stepper activeStep={context.activeStep} alternativeLabel>
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>
-                    <p className="text-[#fff] max-md:text-[0.5rem]">{label}</p>
+                    <p className="text-[#fff] max-md:text-[0.5rem] bg-black">
+                      {label}
+                    </p>
                   </StepLabel>
                 </Step>
               ))}

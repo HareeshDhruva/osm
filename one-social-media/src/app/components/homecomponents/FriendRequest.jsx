@@ -103,7 +103,7 @@ const FriendRequest = () => {
                     className="flex gap-2 items-center w-full"
                     onClick={(e) => userWindowHandle(friend.requestFrom._id)}
                   >
-                    {friend.requestFrom.profileUrl.url ? (
+                    {friend?.requestFrom?.profileUrl?.url ? (
                       <img
                         className="ring-1 ring-gray-500 rounded-full"
                         width={40}
@@ -150,7 +150,7 @@ const FriendRequest = () => {
                 <div className="rounded-lg">
                   <div className="text-[0.7rem] min-w-[12rem] bg-black">
                     <div className="flex items-center flex-col">
-                      {UserData.profileUrl.url ? (
+                      {UserData?.profileUrl?.url ? (
                         <img
                           className="block mx-auto ring-4 rounded-[50%] h-[8rem] ring-gray-500 my-4"
                           src={UserData.profileUrl.url}

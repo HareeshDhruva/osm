@@ -41,7 +41,6 @@ const Post = () => {
     setUserId(id);
     setUserWindow(true);
     mutate();
-    usePost.mutate(id);
   };
 
   const handleClose = () => {
@@ -51,6 +50,7 @@ const Post = () => {
   const handleOpen = (id) => {
     setid(id);
     setOpen(true);
+    usePost.mutate(id);
   };
 
   const handlepostOpen = () => {
@@ -142,7 +142,7 @@ const Post = () => {
               <div className="flex justify-between container">
                 <input
                   type="text"
-                  className="rounded-3xl bg-black text-white w-full h-10 max-md:h-8 focus:outline-none focus:border-gray-800 my-4 px-5 ring-1 ring-gray-500"
+                  className="rounded-3xl bg-black text-white w-[90%] h-10 max-md:h-8 focus:outline-none focus:border-gray-800 my-4 px-5 ring-1 ring-gray-500"
                   placeholder="search user"
                   name=""
                   id=""
@@ -161,13 +161,13 @@ const Post = () => {
                 </div>
               </div>
               {showComponent && (
-                <div className="z-auto">
+                <div className="z-aut absolute bg-white md:min-w-[35%] max-md:w-[90%] max-sm:max-w-[80%] max-md:max-w-[50%] rounded-3xl max-lg:w-[35%]">
                   {searchUserResult.data && (
                     <ul className="rounded-lg w-full">
                       {searchUserResult.data
                         .filter((user) => user.firstname.toLowerCase())
                         .map((user) => (
-                          <li className="m-2 flex justify-between items-center ring-1 ring-gray-400 rounded-full">
+                          <li className="flex justify-between m-2 items-center ring-1 ring-gray-400 rounded-full">
                             <div
                               className="flex gap-5 justify-start items-center rounded-l-3xl w-[80%]"
                               onClick={(e) => userWindowHandle(user._id)}
@@ -183,7 +183,7 @@ const Post = () => {
                                   src="default_profile.jpeg"
                                 />
                               )}
-                              <p className="text-[#fff]">
+                              <p className="text-[#000]">
                                 {user.firstname + " " + user.lastname}
                               </p>
                             </div>
@@ -223,9 +223,7 @@ const Post = () => {
                       />
                     )}
                     <p>
-                      {users.userId.firstname +
-                        " " +
-                        users.userId.lastname}
+                      {users.userId.firstname + " " + users.userId.lastname}
                     </p>
                   </div>
                   <div className="mr-4">
@@ -234,14 +232,20 @@ const Post = () => {
                 </div>
                 <div>
                   {users.image && (
-                    <img
-                      onClick={(e) => handleOpen(users._id)}
-                      className="block cover"
-                      src={users.image.url}
-                      alt="profile"
-                    />
+                    <div className="flex justify-center">
+                      <img
+                        onClick={(e) => {
+                          if (users.comments.length !== 0) {
+                            handleOpen(users._id);
+                          }
+                        }}
+                        className="flex justify-center items-center"
+                        src={users.image.url}
+                        alt="profile"
+                      />
+                    </div>
                   )}
-                  <div className="p-2 flex gap-5">
+                  <div className="p-2 flex gap-5 ">
                     <LikeDislike like={users.likes} id={users._id} />
                   </div>
                   <div className="flex items-start flex-col gap-2 mx-6">

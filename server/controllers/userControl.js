@@ -30,8 +30,9 @@ const verfiyEmail = async (req, res) => {
             if (isMatch) {
               await User.findOneAndUpdate({ _id: userId }, { verified: true })
                 .then((user) => {
-                  console.log(user);
-                  res.redirect(`/user/verified?status=success`);
+                  if(user){
+                    res.redirect(`/user/verified?status=success`);
+                  }
                 })
                 .catch((error) => {
                   res.redirect(`/user/verified?status=fail`);
