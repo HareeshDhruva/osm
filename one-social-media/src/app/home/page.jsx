@@ -2,6 +2,7 @@
 import "./page.css";
 import ProfileCard from "../components/homecomponents/Profile/ProfileCard";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 import Post from "../components/Post/Post";
 import FriendRequest from "../components/homecomponents/FriendRequest";
 import Suggestion from "../components/homecomponents/Suggestion";
@@ -24,7 +25,7 @@ const Home = () => {
           <NavBar />
           <div className="h-20"></div>
           <div className="flex justify-between overflow-hidden">
-            <div className="w-[25%] rounded-lg  m-2 flex flex-col gap-5 max-md:w-[50%] max-sm:hidden">
+            <div className="w-[25%] rounded-lg m-2 flex flex-col gap-5 max-md:w-[50%] max-sm:hidden">
               <ProfileCard />
               <Friends />
             </div>
@@ -36,6 +37,7 @@ const Home = () => {
               <Suggestion />
             </div>
           </div>
+          <Footer/>
           <Backdrop
             sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={loading}

@@ -112,7 +112,7 @@ const NavBar = () => {
       <div className="flex h-20 justify-between md:gap-5 items-center md:mx-4">
         <div className="mx-5 max-md:mx-1">
           <Link href="/home">
-            <img src="osm-white.png" className="max-md:w-14 w-20" />
+            <img src="osm-white.png" className="max-md:w-12 w-20" />
           </Link>
         </div>
         <div className="flex items-center max-md:text-[0.7rem] text-[0.9rem]">

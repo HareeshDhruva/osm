@@ -35,7 +35,6 @@ const Suggestion = () => {
   const sendRequest = (id) => {
     const newData = { requestId: id };
     RequestMutation.mutate(newData);
-    console.log(RequestMutation.data);
     const newMessage = RequestMutation.data;
     if (newMessage === undefined) {
       enqueueSnackbar("Send Request Success", {

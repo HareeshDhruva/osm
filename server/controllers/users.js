@@ -1,5 +1,7 @@
+require('dotenv').config();
 const User = require("../models/userModels");
 const FriendRequest = require("../models/requestSchema");
+const cloudinary = require('cloudinary');
 
 const getUser = async (req, res) => {
   const { userId } = req.body.user;
@@ -36,22 +38,24 @@ const updateUser = async (req, res) => {
 };
 
 const updateProfilePhoto = async (req, res) => {
-  const { userId } = req.body.user;
-  const { data } = req.body;
-  if (!data) {
-    return res.status(201).json({ message: "Provide all Fields" });
-  }
-  const updatedUser = await User.findByIdAndUpdate(
-    { _id: userId },
-    {
-      profileUrl: data,
+  try {
+    const { userId } = req.body.user;
+    const { data } = req.body;
+    if (!data) {
+      return res.status(400).json({ message: "Provide all Fields" });
     }
-  );
-
-  if (updatedUser) {
-    res.status(200).json({ data: updatedUser });
-  } else {
-    res.status(201).json({ message: "users update fail" });
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const deleteCloudinary = cloudinary.v2.api.delete_resources(user.profileUrl.public_id);
+    user.profileUrl = data;
+    const saveUser = user.save();
+    await Promise.all([deleteCloudinary, saveUser]);
+    res.status(200).json({ data: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 

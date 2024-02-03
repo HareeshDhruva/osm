@@ -27,7 +27,6 @@ const Home = () => {
     gender: "",
   };
 
-  //state init
   const [logindata, setloginData] = useState(loginData);
   const [registerdata, setRegister] = useState(registerData);
   const [loading, setLoading] = useState(false);
@@ -35,7 +34,6 @@ const Home = () => {
   const [passwordResetRequest, setPasswordResetRequest] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
-  //onchane function
   const onValueChange = (e) => {
     e.preventDefault();
     setloginData({ ...logindata, [e.target.name]: e.target.value });
@@ -46,7 +44,6 @@ const Home = () => {
     setRegister({ ...registerdata, [e.target.name]: e.target.value });
   };
 
-  //register
   const onRegister = async () => {
     handleOpenLoading();
     try {
@@ -95,7 +92,6 @@ const Home = () => {
     }
   };
 
-  //login
   const onLogin = async () => {
     handleOpenLoading();
     try {
@@ -124,8 +120,6 @@ const Home = () => {
     }
   };
 
-  // dummy login
-
   const dummyLogin = async (e) => {
     handleOpenLoading();
     const data = {
@@ -150,7 +144,6 @@ const Home = () => {
     }
   };
 
-  // passwordRequest
   const passwordRequest = async () => {
     handleOpenLoading();
     if (resetEmail) {
@@ -184,7 +177,6 @@ const Home = () => {
     }
   };
 
-  // state function
   const handleClose = () => {
     setOpen(false);
   };
@@ -192,8 +184,6 @@ const Home = () => {
     e.preventDefault();
     setOpen(true);
   };
-
-  //loading
 
   const handleLoading = () => {
     setLoading(false);
@@ -203,7 +193,6 @@ const Home = () => {
     setLoading(true);
   };
 
-  // paassword set onHadlepasswordResetRequest
   const onHadlepasswordResetRequest = () => {
     setPasswordResetRequest(true);
   };

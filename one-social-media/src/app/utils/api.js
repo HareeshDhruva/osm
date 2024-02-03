@@ -118,17 +118,6 @@ export const getComment = async (id) => {
   return res.data.data;
 };
 
-export const makeApost = async (description, image) => {
-  const data = { description, image };
-  await axios.post(`${URL}/create-post`, {
-    data: data,
-    headers: {
-      "Content-Type": "application/json",
-      authorization: token ? `Bearer ${token}` : "",
-    },
-  });
-};
-
 export const makeAComment = async (data, id) => {
   if (data) {
     return await axios.post(`${URL}/comment-post/${id}`, {
@@ -141,7 +130,6 @@ export const makeAComment = async (data, id) => {
   }
 };
 
-// latest
 export const replyCommentMod = async (comment, from, url, id) => {
   if (comment) {
     const data = { comment, from, url };
@@ -167,7 +155,7 @@ export const getUserPost = async (id) => {
   }
 };
 
-//update user
+
 export const updateUser = async (pagedata) => {
   const response = await axios.post(`${URL}/updateUser`, {
     data: pagedata,
@@ -207,4 +195,27 @@ export const deleteFriend = async (data) => {
     },
   });
   return res.data.message;
+};
+
+export const profileUpdate = async(file)=>{
+  console.log(file)
+  return await axios.post(`${URL}/updateProfilePhoto`, {
+    method: "POST",
+    data:file,
+    headers: {
+      "Content-Type": "application/json",
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+}
+ 
+export const makeApost = async (description, image) => {
+  const data = { description, image };
+  return await axios.post(`${URL}/create-post`, {
+    data: data,
+    headers: {
+      "Content-Type": "application/json",
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  });
 };

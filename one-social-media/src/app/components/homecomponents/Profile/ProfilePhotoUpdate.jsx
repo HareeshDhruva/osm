@@ -10,18 +10,18 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { adminData } from "@/app/utils/api";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const ProfilePhotoUpdate = ({ open, setOpen, mode }) => {
   const context = useContext(UserContest);
-
+  const queryClient = useQueryClient(); 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const steps = ["UPLOAD FILE", "CROP", "UPLOAD"];
+  const steps = ["UPLOAD FILE", "UPLOAD"];
 
-  if (context.activeStep === 4) {
+  if (context.activeStep === 3) {
     handleClose();
   }
 
@@ -59,13 +59,13 @@ const ProfilePhotoUpdate = ({ open, setOpen, mode }) => {
             </DialogTitle>
             {Admin && Admin?.profileUrl !== null ? (
               <img
-                className="block mx-auto ring-4 rounded-[50%] h-[8rem] ring-gray-500"
+                className="block mx-auto ring-4 rounded-[50%] h-[8rem] max-md:h-[5rem] ring-gray-500"
                 src={Admin?.profileUrl?.url}
                 alt=""
               />
             ) : (
               <img
-                className="block mx-auto ring-4 rounded-[50%] h-[8rem] ring-gray-500"
+                className="block mx-auto ring-4 rounded-[50%] h-[8rem] max-md:h-[5rem] ring-gray-500"
                 src="default_profile.jpeg"
                 alt=""
               />

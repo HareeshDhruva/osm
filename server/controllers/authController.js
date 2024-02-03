@@ -16,11 +16,12 @@ const register = async(req,res) =>{
         if(ExistUser){
             return res.status(201).json({message:"Email Already Exist"});
         }
+        
         const hasedPassword = await hasing(password);
         const user = await User.create({
             firstname,
             lastname,
-            email,
+            email:email.toLowerCase(),
             DOB,
             gender,
             password:hasedPassword,
@@ -54,7 +55,6 @@ const login = async(req,res) => {
             res.cookie('token', token, { 
                 path: "/",
                 maxAge: 90000,
-                // signed: true,
                 sameSite: 'None',
                 secure: true,
                 Domain:"osm-beta.vercel.app"

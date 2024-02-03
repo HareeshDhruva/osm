@@ -7,7 +7,6 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { UserContest } from "../../Context/UserContest";
-
 const MakePost = ({ open, setPostOpen, mode }) => {
   const context = useContext(UserContest);
 
@@ -16,10 +15,9 @@ const MakePost = ({ open, setPostOpen, mode }) => {
     context.setActiveStep(0);
   };
 
-  // steper
-  const steps = ["DESCRIPTION", "UPLOAD FILE", "CROP", "UPLOAD"];
+  const steps = ["DESCRIPTION", "UPLOAD FILE", "UPLOAD"];
 
-  if (context.activeStep === 4) {
+  if (context.activeStep === 3) {
     handleClose();
   }
 

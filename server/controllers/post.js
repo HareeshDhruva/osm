@@ -6,11 +6,6 @@ const createPost = async (req, res) => {
   try {
     const { userId } = req.body.user;
     const { description, image } = req.body.data;
-    // cloudinary.v2.uploader
-    // .upload('IMG_20220523_184031.jpg', {
-    //   folder: 'profileUrl',
-    //   resource_type: 'image'})
-    // .then(console.log);
     if (!image) {
       return res.status(201).json("image must!");
     }

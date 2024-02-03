@@ -13,8 +13,9 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Slider from "@mui/material/Slider";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import UploadComponent from "@/app/utils/cloud";
 import { useSnackbar } from "notistack";
+import { useQueryClient,useMutation } from "@tanstack/react-query";
+import { makeApost, profileUpdate } from "@/app/utils/api";
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -44,6 +45,7 @@ export default function ImageCrop({ mode }) {
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
 
+  const queryClient = useQueryClient();
   const context = useContext(UserContest);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -63,7 +65,7 @@ export default function ImageCrop({ mode }) {
         setImgSrc(reader.result?.toString() || "")
       );
       reader.readAsDataURL(e.target.files[0]);
-      context.setActiveStep(2);
+      context.setActiveStep(1);
     }
   }
 
@@ -73,6 +75,38 @@ export default function ImageCrop({ mode }) {
       setCrop(centerAspectCrop(width, height, aspect));
     }
   }
+
+  const profile = useMutation({
+    mutationFn:(data)=> profileUpdate(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["Admin"] });
+      context.setActiveStep(3);
+      enqueueSnackbar("Peofile updated", {
+        autoHideDuration: 3000,
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "center",
+        },
+      });
+    },
+  });
+
+  const post = useMutation({
+    mutationFn: (data)=> makeApost(description,data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["post"] });
+      context.setActiveStep(3);
+      enqueueSnackbar("Added a new Post", {
+        autoHideDuration: 3000,
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "center",
+        },
+      });
+    },
+  });
 
   async function onDownloadCropClick() {
     handleOpenLoading();
@@ -117,29 +151,33 @@ export default function ImageCrop({ mode }) {
     });
 
     const formData = new FormData();
-
     formData.append("file", file);
     formData.append("upload_preset", "SocilaMedia");
-
     try {
       const response = await axios.post(
         `https://api.cloudinary.com/v1_1/sociladb/image/upload`,
         formData
       );
       if (response.status == 200) {
-        enqueueSnackbar("Crop Success", {
-          autoHideDuration: 3000,
-          variant: "success",
-          anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "center",
-          },
-        });
         const url = response.data.url;
         const public_id = response.data.public_id;
         const data = { url, public_id };
-        context.setPhoto(data);
-        context.setActiveStep(3);
+        try {
+          if (mode !== "MAKE POST") {
+            profile.mutate(data);
+          } else {
+            post.mutate(data);
+          }
+        } catch (error) {
+          enqueueSnackbar(error.message, {
+            autoHideDuration: 3000,
+            variant: "error",
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "center",
+            },
+          });
+        }
       }
     } catch (error) {
       enqueueSnackbar(error.response.data.error.message, {
@@ -212,7 +250,7 @@ export default function ImageCrop({ mode }) {
       )}
       <div className="App flex justify-center items-center">
         <div className="w-1/2 justify-center items-center">
-          <div className="flex justify-center font-semibold md:my-5 ">
+          <div className="flex justify-center font-semibold my-5 ">
             <Button
               component="label"
               variant="outlined"
@@ -225,7 +263,7 @@ export default function ImageCrop({ mode }) {
           </div>
 
           {!!imgSrc && (
-            <div className="flex justify-center items-center m-10">
+            <div className="flex justify-center items-center">
               <ReactCrop
                 crop={crop}
                 onChange={(_, percentCrop) => setCrop(percentCrop)}
@@ -300,9 +338,8 @@ export default function ImageCrop({ mode }) {
                   sx={{ border: "1px solid #fff", bgcolor: "black" }}
                   onClick={onDownloadCropClick}
                 >
-                  <p className="max-md:text-[0.5rem] text-[#fff]">Crop</p>
+                  <p className="max-md:text-[0.5rem] text-[#fff]">Upload</p>
                 </Button>
-                <UploadComponent name={mode} description={description} />
               </div>
             </div>
           )}
