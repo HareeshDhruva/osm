@@ -25,6 +25,7 @@ import {
   Toolbar,
 } from "@mui/material";
 import axios from "axios";
+import Message from "./homecomponents/message";
 
 const NavBar = () => {
   const [userid, setUserId] = useState("");
@@ -327,6 +328,7 @@ const NavBar = () => {
           <ProfileCard />
           <FriendRequest />
           <Suggestion />
+          <Message/>
           <div onClick={onLogout} typeof="button">
             <div className="ring-1 w-full h-10 ring-gray-500 rounded-3xl justify-center flex items-center">
               <p className="m-1 uppercase font-bold cursor-pointer text-[#fff]">

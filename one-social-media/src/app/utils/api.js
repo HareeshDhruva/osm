@@ -1,7 +1,6 @@
 import axios from "axios";
 const URL = process.env.NEXT_PUBLIC_BACKEND;
-const token =
-  typeof window !== "undefined" ? localStorage.getItem("user") : null;
+const token = typeof window !== "undefined" ? localStorage.getItem("user") : null;
 
 export const adminData = async () => {
   const res = await axios.post(`${URL}/getuser`, {
@@ -218,4 +217,15 @@ export const makeApost = async (description, image) => {
       authorization: token ? `Bearer ${token}` : "",
     },
   });
+};
+
+export const getMessage = async (data) => {
+  const res = await axios.post(`${URL}/message`, {
+    data: data,
+    headers: {
+      "Content-Type": "application/json",
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+  return res.data.data;
 };

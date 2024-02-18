@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { adminData } from "../utils/api";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import Message from "../components/homecomponents/message";
 
 const Home = () => {
   const {
@@ -35,6 +36,7 @@ const Home = () => {
             <div className="w-[25%] h-full m-2 rounded-lg flex flex-col gap-5 max-md:hidden">
               <FriendRequest />
               <Suggestion />
+              <Message/>
             </div>
           </div>
           <Footer/>

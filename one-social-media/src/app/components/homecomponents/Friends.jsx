@@ -49,7 +49,6 @@ const Friends = () => {
     mutationFn: (userid) => getUserPost(userid),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userPost"] });
-      console.log("hello");
     },
   });
 

@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const { sendPasswordchangeEmail } = require("../utils/passwordChange");
 const {sendPasswordReset} = require('../utils/passwordResetRequest');
 const jwt = require("jsonwebtoken");
+const Smg = require("../models/messageModel");
 
 const register = async(req,res) =>{
     const {firstname,lastname,email,password,DOB,gender} = req.body;
@@ -45,7 +46,7 @@ const login = async(req,res) => {
         if(!user){
             return res.status(201).json({message:"User Not Exist"})
         }
-        const validPass = await bcrypt.compare(password,user.password)
+        const validPass = bcrypt.compare(password, user.password)
         
         if(!validPass){
             return res.status(201).json({message:"Incorrect Password"})
@@ -124,6 +125,19 @@ const logout = (req,res)=>{
     res.status(200).cookie("token",token,{httpOnly:true,expaisIn:"1D", path: "/"}).json({message:"logout"});
 }
 
+const getMessage = async (req, res) => {
+    try {
+        const { data } = req.body;
+        const smg = await Smg.find({ sender: data.sender, receiver: data.receiver });
+        const smg2 = await Smg.find({ sender: data.receiver, receiver: data.sender });
+        let messages = smg.concat(smg2);
+        messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        res.status(200).json({ data:messages });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
 
-module.exports = {register,login,logout,resetPasswordRequest,passwordChange,verifiedpasswordChange}
+
+module.exports = {getMessage,register,login,logout,resetPasswordRequest,passwordChange,verifiedpasswordChange}
 
