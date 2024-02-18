@@ -11,6 +11,14 @@ const Smg = require("./model/messageModel");
 dotenv.config();
 const URL = process.env.MONGO_URL;
 const message = express();
+app.use(
+  cors({
+    origin: process.env.FRONTEND,
+    credentials: true,
+  })
+);
+message.use(bodyparser.json({ extended: true }));
+message.use(bodyparser.urlencoded({ extended: true }));
 const server = http.createServer(message);
 connection(URL);
 const io = new Server(server,{
