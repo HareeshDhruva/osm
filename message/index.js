@@ -30,7 +30,6 @@ const io = new Server(server,{
 });
 
 const pub = new Radis(process.env.REDIS);
-
 const sub = new Radis(process.env.REDIS);
 
 message.get('/',(req,res)=>{
