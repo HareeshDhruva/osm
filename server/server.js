@@ -11,7 +11,7 @@ const {
   passwordChange,
   verifiedpasswordChange,
   logout,
-  getMessage
+  getMessage,
 } = require("./controllers/authController");
 const router = require("./routes/auth");
 const path = require("path");
@@ -82,7 +82,7 @@ app.post("/acceptFriendRequest", userAuth, acceptfriendRequest);
 app.post("/profileView", userAuth, profileView); //not
 app.post("/suggested", userAuth, suggested);
 app.post("/searchUser", searchUser);
-app.post("/deleteFriend",userAuth,removeFriend);
+app.post("/deleteFriend", userAuth, removeFriend);
 
 app.get("/", getPost);
 app.post("/create-post", userAuth, createPost);
@@ -94,7 +94,7 @@ app.post("/like/:id", userAuth, likeApost);
 app.post("/like-comment/:id/:rid?", userAuth, likeAcomment);
 app.post("/comment-post/:id", userAuth, commentPost);
 app.post("/reply-comment/:id", userAuth, replyPostComment);
-app.post("/message",userAuth,getMessage);
+app.post("/message", userAuth, getMessage);
 
 app.post("/logout", logout); //not
 app.listen(process.env.PORT, () => {
