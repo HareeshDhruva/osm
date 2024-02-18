@@ -11,7 +11,7 @@ const Smg = require("./model/messageModel");
 dotenv.config();
 const URL = process.env.MONGO_URL;
 const message = express();
-app.use(
+message.use(
   cors({
     origin: process.env.FRONTEND,
     credentials: true,
