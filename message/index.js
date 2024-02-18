@@ -21,19 +21,9 @@ const io = new Server(server,{
   }
 });
 
-const pub = new Radis({
-  host:"redis-19740.c212.ap-south-1-1.ec2.cloud.redislabs.com",
-  port:19740,
-  username:"default",
-  password:"N52PlntqaCqcg5KGYdUcoVY7RUZLmDHn"
-});
+const pub = new Radis(process.env.REDIS);
 
-const sub = new Radis({
-  host:"redis-19740.c212.ap-south-1-1.ec2.cloud.redislabs.com",
-  port:19740,
-  username:"default",
-  password:"N52PlntqaCqcg5KGYdUcoVY7RUZLmDHn"
-});
+const sub = new Radis(process.env.REDIS);
 
 io.on("connection",(socket)=>{
     sub.subscribe("MESSAGES");
