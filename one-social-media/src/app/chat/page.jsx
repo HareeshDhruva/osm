@@ -217,7 +217,7 @@ const page = () => {
             ))}
             <div className="fixed bottom-0 w-[70%] p-2">
               <div className="flex items-center md:mx-6">
-                <div className="flex md:gap-5 w-full justify-between items-center">
+                <div className="flex gap-5 w-full justify-between items-center">
                   {
                     connector &&
                     <>
@@ -230,10 +230,7 @@ const page = () => {
                     onKeyDown={(event) => {
                       if (event.key === "Enter") sendMessage();
                     }}
-                    style={{
-                      color: all.blue[800],
-                    }}
-                    className="w-full h-10 max-md:h-8 rounded-3xl px-4 focus:outline-none"
+                    className="w-full h-10 max-md:h-8 rounded-3xl px-4 focus:outline-none text-[#000]"
                   />
                   <div>
                     <SendIcon
