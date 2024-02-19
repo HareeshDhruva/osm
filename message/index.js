@@ -17,7 +17,9 @@ const FRONTEND_URL = process.env.FRONTEND;
 const app = express();
 const server = http.createServer(app);
 
-app.use(cors());
+app.use(cors({
+  origin: FRONTEND_URL
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
