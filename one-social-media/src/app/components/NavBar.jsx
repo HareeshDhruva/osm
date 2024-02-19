@@ -34,13 +34,7 @@ const NavBar = () => {
   const [mini, setMini] = useState(false);
 
   const onLogout = async () => {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND}/logout`,
-      {},
-      {
-        withCredentials: true,
-      }
-    );
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/logout`,{});
     if (res.status === 200) {
       localStorage.clear();
       window.location.replace("/");
