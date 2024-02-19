@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-const socket = io.connect(process.env.NEXT_PUBLIC_MESSAGE);
+const socket = io.connect(process.env.NEXT_PUBLIC_BACKEND);
 import * as all from "@mui/material/colors";
 import { IoArrowBackCircle } from "react-icons/io5";
 import SendIcon from "@mui/icons-material/Send";

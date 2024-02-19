@@ -3,6 +3,7 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const connection = require("./config");
+const Redis = require("ioredis");
 
 const {
   login,
@@ -97,6 +98,36 @@ app.post("/reply-comment/:id", userAuth, replyPostComment);
 app.post("/message", userAuth, getMessage);
 
 app.post("/logout", logout); //not
-app.listen(process.env.PORT, () => {
+
+const server = app.listen(process.env.PORT, () => {
   console.log(`main server started`);
+});
+
+const io = require("socket.io")(server,{
+  cors: {
+    origin: process.env.FRONTEND,
+    methods: ["GET", "POST"],
+  },
+  pingTimeout:60
+})
+const REDIS_URL = process.env.REDIS
+
+const pub = new Redis(REDIS_URL);
+const sub = new Redis(REDIS_URL);
+
+
+io.on("connection", (socket) => {
+  sub.subscribe("MESSAGES");
+  socket.on("join_room", (data) => {
+    socket.join(data);
+  });
+
+  socket.on("send_message", async (data) => {
+    await pub.publish("MESSAGES", JSON.stringify(data));
+    socket.to(data.receiver).emit("receive_message", data);
+  });
+
+  socket.on("disconnect", () => {
+    // Clean up resources if needed
+  });
 });
