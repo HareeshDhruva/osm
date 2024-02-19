@@ -106,7 +106,7 @@ const server = app.listen(process.env.PORT, () => {
 
 const io = require("socket.io")(server,{
   cors: {
-    origin: process.env.FRONTEND,
+    origin: "https://osm-beta.vercel.app",
     methods: ["GET", "POST"],
   },
   pingTimeout:60
