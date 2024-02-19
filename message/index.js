@@ -21,10 +21,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect(MONGO_URL).then(() => {
   console.log("MongoDB connected");
 }).catch(err => console.error(err));
 
@@ -44,7 +41,6 @@ app.get('/', (req, res) => {
 
 io.on("connection", (socket) => {
   sub.subscribe("MESSAGES");
-
   socket.on("join_room", (data) => {
     socket.join(data);
   });
@@ -72,5 +68,5 @@ sub.on('message', async (channel, data) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Chat server started on port ${PORT}`);
+  console.log(`Chat server started`);
 });

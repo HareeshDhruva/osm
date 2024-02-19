@@ -98,5 +98,5 @@ app.post("/message", userAuth, getMessage);
 
 app.post("/logout", logout); //not
 app.listen(process.env.PORT, () => {
-  console.log(`server started`);
+  console.log(`main server started`);
 });
