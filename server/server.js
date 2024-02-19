@@ -42,6 +42,7 @@ const {
   commentPost,
   replyPostComment,
 } = require("./controllers/comments");
+const Smg = require("./models/messageModel");
 
 dotenv.config();
 const URL = process.env.MONGO_URL;
@@ -130,4 +131,16 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     // Clean up resources if needed
   });
+});
+
+sub.on('message', async (channel, data) => {
+  if (channel === 'MESSAGES') {
+    try {
+      const new_data = JSON.parse(data);
+      const newMessage = await Smg.create(new_data);
+      await newMessage.save();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 });

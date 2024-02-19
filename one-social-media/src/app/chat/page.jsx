@@ -21,13 +21,12 @@ const page = () => {
   const friends = Admin?.friends;
 
   const connectorData = Admin?._id;
-
   socket.emit("join_room", connectorData);
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const messageData = {
         sender_name: Admin?.firstname + " " + Admin?.lastname,
-        profile: Admin?.profileUrl.url,
+        profile: Admin?.profileUrl.url || "default_profile.jpeg",
         sender: Admin?._id,
         receiver: connector?._id,
         room: connectorData,
