@@ -18,8 +18,12 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(cors({
-  origin: FRONTEND_URL
+  origin: FRONTEND_URL,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept']
 }));
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
