@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const http = require('http');
 const { Server } = require('socket.io');
 const Redis = require("ioredis");
-const Message = require("./model/messageModel");
+const Smg = require("./model/messageModel");
 
 dotenv.config();
 const PORT = process.env.PORT || 8001;
@@ -61,7 +61,7 @@ sub.on('message', async (channel, data) => {
   if (channel === 'MESSAGES') {
     try {
       const new_data = JSON.parse(data);
-      const newMessage = await Message.create(new_data);
+      const newMessage = await Smg.create(new_data);
       await newMessage.save();
     } catch (error) {
       console.error(error);
