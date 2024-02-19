@@ -52,10 +52,10 @@ connection(URL);
 app.use(router);
 app.use(bodyparser.json({ extended: true }));
 app.use(bodyparser.urlencoded({ extended: true }));
+
 app.use(
   cors({
-    origin: true,
-    credentials: true
+    origin:process.env.FRONTEND,
   })
 );
 
@@ -106,7 +106,7 @@ const server = app.listen(process.env.PORT, () => {
 
 const io = require("socket.io")(server,{
   cors: {
-    origin: "https://osm-beta.vercel.app",
+    origin: process.env.FRONTEND,
     methods: ["GET", "POST"],
   },
   pingTimeout:60

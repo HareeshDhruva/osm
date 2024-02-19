@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-const socket = io.connect("https://osm-server.vercel.app");
+const socket = io.connect(process.env.NEXT_PUBLIC_BACKEND);
 import { IoArrowBackCircle } from "react-icons/io5";
 import SendIcon from "@mui/icons-material/Send";
 import { io } from "socket.io-client";
