@@ -3,7 +3,6 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const connection = require("./config");
-const Redis = require("ioredis");
 
 const {
   login,
@@ -12,7 +11,6 @@ const {
   passwordChange,
   verifiedpasswordChange,
   logout,
-  getMessage,
 } = require("./controllers/authController");
 const router = require("./routes/auth");
 const path = require("path");
@@ -42,7 +40,6 @@ const {
   commentPost,
   replyPostComment,
 } = require("./controllers/comments");
-const Smg = require("./models/messageModel");
 
 dotenv.config();
 const URL = process.env.MONGO_URL;
@@ -55,8 +52,8 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin:process.env.FRONTEND,
-    credentials:true
+    origin: process.env.FRONTEND,
+    credentials: true,
   })
 );
 
@@ -97,51 +94,8 @@ app.post("/like/:id", userAuth, likeApost);
 app.post("/like-comment/:id/:rid?", userAuth, likeAcomment);
 app.post("/comment-post/:id", userAuth, commentPost);
 app.post("/reply-comment/:id", userAuth, replyPostComment);
-app.post("/message", userAuth, getMessage);
 
 app.post("/logout", logout); //not
-
-const server = app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(`main server started`);
-});
-
-const io = require("socket.io")(server,{
-  cors: {
-    origin: process.env.FRONTEND,
-    methods: ["GET", "POST"],
-  },
-  pingTimeout:60
-})
-const REDIS_URL = process.env.REDIS
-
-const pub = new Redis(REDIS_URL);
-const sub = new Redis(REDIS_URL);
-
-
-io.on("connection", (socket) => {
-  sub.subscribe("MESSAGES");
-  socket.on("join_room", (data) => {
-    socket.join(data);
-  });
-
-  socket.on("send_message", async (data) => {
-    await pub.publish("MESSAGES", JSON.stringify(data));
-    socket.to(data.receiver).emit("receive_message", data);
-  });
-
-  socket.on("disconnect", () => {
-    // Clean up resources if needed
-  });
-});
-
-sub.on('message', async (channel, data) => {
-  if (channel === 'MESSAGES') {
-    try {
-      const new_data = JSON.parse(data);
-      const newMessage = await Smg.create(new_data);
-      await newMessage.save();
-    } catch (error) {
-      console.error(error);
-    }
-  }
 });

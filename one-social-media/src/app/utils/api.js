@@ -218,14 +218,3 @@ export const makeApost = async (description, image) => {
     },
   });
 };
-
-export const getMessage = async (data) => {
-  const res = await axios.post(`${URL}/message`, {
-    data: data,
-    headers: {
-      "Content-Type": "application/json",
-      authorization: token ? `Bearer ${token}` : "",
-    },
-  });
-  return res.data.data;
-};

@@ -36,7 +36,6 @@ const Home = () => {
             <div className="w-[25%] h-full m-2 rounded-lg flex flex-col gap-5 max-md:hidden">
               <FriendRequest />
               <Suggestion />
-              <Message/>
             </div>
           </div>
           <Footer/>

@@ -34,7 +34,13 @@ const NavBar = () => {
   const [mini, setMini] = useState(false);
 
   const onLogout = async () => {
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/logout`,{});
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKEND}/logout`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
     if (res.status === 200) {
       localStorage.clear();
       window.location.replace("/");
@@ -322,7 +328,6 @@ const NavBar = () => {
           <ProfileCard />
           <FriendRequest />
           <Suggestion />
-          <Message/>
           <div onClick={onLogout} typeof="button">
             <div className="ring-1 w-full h-10 ring-gray-500 rounded-3xl justify-center flex items-center">
               <p className="m-1 uppercase font-bold cursor-pointer text-[#fff]">

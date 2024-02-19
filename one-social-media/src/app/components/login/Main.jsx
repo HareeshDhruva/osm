@@ -95,7 +95,9 @@ const Home = () => {
   const onLogin = async () => {
     handleOpenLoading();
     try {
-      const result = await axios.post(APP_URL + "/login", logindata);
+      const result = await axios.post(APP_URL + "/login", logindata,{
+        withCredentials:true
+      });
       if (result.status === 200) {
         localStorage.setItem("user", result.data.data);
         setloginData(loginData);
