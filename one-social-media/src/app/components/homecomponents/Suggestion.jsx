@@ -27,35 +27,55 @@ const Suggestion = () => {
 
   const RequestMutation = useMutation({
     mutationFn: (newData) => sendFriendRequestMod(newData),
-    onSuccess: () => {
+    onSuccess: (message) => {
       queryClient.invalidateQueries({ queryKey: ["suggestion"] });
+      if (message === "Sent Request") {
+        enqueueSnackbar(message, {
+          autoHideDuration: 3000,
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+        });
+      } else {
+        enqueueSnackbar(message, {
+          autoHideDuration: 3000,
+          variant: "error",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+          preventDuplicate: false,
+        });
+      }
     },
   });
 
   const sendRequest = (id) => {
     const newData = { requestId: id };
     RequestMutation.mutate(newData);
-    const newMessage = RequestMutation.data;
-    if (newMessage === undefined) {
-      enqueueSnackbar("Send Request Success", {
-        autoHideDuration: 3000,
-        variant: "success",
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "right",
-        },
-      });
-    } else {
-      enqueueSnackbar(newMessage, {
-        autoHideDuration: 3000,
-        variant: "error",
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "right",
-        },
-        preventDuplicate: false,
-      });
-    }
+    // const newMessage = RequestMutation.data;
+    // if (newMessage === undefined) {
+    //   enqueueSnackbar("Send Request Success", {
+    //     autoHideDuration: 3000,
+    //     variant: "success",
+    //     anchorOrigin: {
+    //       vertical: "bottom",
+    //       horizontal: "right",
+    //     },
+    //   });
+    // } else {
+    //   enqueueSnackbar(newMessage, {
+    //     autoHideDuration: 3000,
+    //     variant: "error",
+    //     anchorOrigin: {
+    //       vertical: "bottom",
+    //       horizontal: "right",
+    //     },
+    //     preventDuplicate: false,
+    //   });
+    // }
   };
 
   //user

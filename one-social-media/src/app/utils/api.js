@@ -55,7 +55,7 @@ export const friendRequestAcceptMode = async (data) => {
     },
   });
   if (res.status === 200) {
-    console.log(res.data);
+    return res.data.message;
   }
 };
 
@@ -177,12 +177,13 @@ export const likeAcomment = async (data) => {
 };
 
 export const deletePost = async (id) => {
-  return await axios.post(`${URL}/delete-post/${id}`, {
+  const res =  await axios.post(`${URL}/delete-post/${id}`, {
     headers: {
       "Content-Type": "application/json",
       authorization: token ? `Bearer ${token}` : "",
     },
   });
+  return res.data.message;
 };
 
 export const deleteFriend = async (data) => {

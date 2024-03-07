@@ -14,10 +14,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Dialog, DialogContent, AppBar, Toolbar } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useSnackbar } from "notistack";
 
 const FriendRequest = () => {
   const [id, setId] = useState("");
   const newData = { rid: id, requestStatus: "Pending" };
+  const { enqueueSnackbar } = useSnackbar();
 
   const { data: Request } = useQuery({
     queryKey: ["friendRequest"],
@@ -27,9 +29,17 @@ const FriendRequest = () => {
 
   const friendRequestMutation = useMutation({
     mutationFn: () => friendRequestAcceptMode(newData),
-    onSuccess: () => {
+    onSuccess: (message) => {
       queryClient.invalidateQueries({ queryKey: ["friendRequest"] });
       queryClient.invalidateQueries({ queryKey: ["Admin"] });
+      enqueueSnackbar(message, {
+        autoHideDuration: 3000,
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+      });
     },
   });
 

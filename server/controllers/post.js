@@ -76,11 +76,11 @@ const deletePost = async (req, res) => {
         const result = await Post.findByIdAndDelete({ _id: id });
         if (result) {
             cloudinary.v2.api.delete_resources(postfound.image.public_id).then(()=>{
-            return res.status(200).json({ message: "Delete SuccessFully"});
+            return res.status(200).json({ message: "Delete Success"});
           });
         }
       } else {
-        res.status(201).json({ message: "Not actual user" });
+        res.status(201).json({ message: `Only admin can delete` });
       }
     } else {
       res.status(201).json({ message: "Post already deleted" });

@@ -1,5 +1,4 @@
 "use client";
-import "./page.css";
 import ProfileCard from "../components/homecomponents/Profile/ProfileCard";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -11,7 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import { adminData } from "../utils/api";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import Message from "../components/homecomponents/message";
 
 const Home = () => {
   const {
@@ -20,7 +18,7 @@ const Home = () => {
     isSuccess: success,
   } = useQuery({ queryKey: ["Admin"], queryFn: adminData });
   return (
-    <div className="bg-black">
+    <div className="">
       {Admin && (
         <>
           <NavBar />

@@ -70,8 +70,7 @@ const sendfriendRequest = async (req, res, next) => {
     });
 
     if (existRequest) {
-      res.status(201).json({ message: "You Have Alredy Sent Request" ,data:existRequest.status});
-      return;
+      return res.status(201).json({ message: "You Have Alredy Sent Request" ,data:existRequest.status});
     }
 
     const accountExist = await FriendRequest.findOne({
@@ -80,8 +79,7 @@ const sendfriendRequest = async (req, res, next) => {
     });
 
     if (accountExist) {
-      res.status(201).json({ message: "You Have Alredy Received Request",data:accountExist.status });
-      return;
+      return res.status(201).json({ message: "You Have Alredy Received Request",data:accountExist.status });
     }
 
     const newRequest = await FriendRequest.create({
@@ -89,9 +87,9 @@ const sendfriendRequest = async (req, res, next) => {
       requestTo: requestId,
     });
     newRequest.save();
-    res.status(200).json({ success: true, message: newRequest });
+    return res.status(200).json({ success: true, message: "Sent Request" });
   } catch (error) {
-    console.log(error);
+    return res.status(201).json({ success: true, message: "Sent Request Fail" });
   }
 };
 
@@ -147,7 +145,7 @@ const acceptfriendRequest = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Success",
+      message: "Friend Request Accepted",
     });
   } catch (error) {
     console.error(error);
@@ -212,6 +210,7 @@ const removeFriend = async (req, res) => {
     const userId = req.body.user.userId;
     const friendIdToRemove = req.body.data;
     await FriendRequest.findOneAndDelete({requestTo:friendIdToRemove,requestFrom:userId});
+    await FriendRequest.findOneAndDelete({requestTo:userId,requestFrom:friendIdToRemove});
     const currentUser = await User.findById(userId);
     const friendIndex = currentUser.friends.indexOf(friendIdToRemove);
     if (friendIndex !== -1) {
@@ -222,7 +221,7 @@ const removeFriend = async (req, res) => {
       if (currentUserIndexInFriend !== -1) {
         friendUser.friends.splice(currentUserIndexInFriend, 1);
         await friendUser.save();
-        return res.status(200).json({ message: "Friend removed successfully" });
+        return res.status(200).json({ message: `${friendUser.firstname} removed` });
       } else {
         return res.status(404).json({ message: "User not found in friend's friend list" });
       }

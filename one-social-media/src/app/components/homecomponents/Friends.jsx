@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Dialog, DialogContent, AppBar, Toolbar } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useSnackbar } from "notistack";
 
 const Friends = () => {
   const { data: Admin } = useQuery({ queryKey: ["Admin"], queryFn: adminData });
@@ -15,6 +16,7 @@ const Friends = () => {
 
   const [userid, setUserId] = useState("");
   const [userWindow, setUserWindow] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const userWindowHandle = (id) => {
     setUserId(id);
@@ -66,9 +68,17 @@ const Friends = () => {
 
   const deletfriend = useMutation({
     mutationFn: (userid) => deleteFriend(userid),
-    onSuccess: () => {
+    onSuccess: (message) => {
       queryClient.invalidateQueries({ queryKey: ["Admin"] });
-      console.log("remove success");
+      enqueueSnackbar(message,{
+        autoHideDuration: 2000,
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        preventDuplicate: false,
+      });
     },
   });
 

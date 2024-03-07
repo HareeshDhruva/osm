@@ -25,13 +25,14 @@ import {
   Toolbar,
 } from "@mui/material";
 import axios from "axios";
-import Message from "./homecomponents/message";
+import { useSnackbar } from "notistack";
 
 const NavBar = () => {
   const [userid, setUserId] = useState("");
   const [userWindow, setUserWindow] = useState(false);
   const [edit, setEdit] = useState(false);
   const [mini, setMini] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const onLogout = async () => {
     const res = await axios.post(
@@ -98,10 +99,32 @@ const NavBar = () => {
 
   const deletepost = useMutation({
     mutationFn: (userid) => deletePost(userid),
-    onSuccess: () => {
+    onSuccess: (message) => {
       queryClient.invalidateQueries({ queryKey: ["post"] });
       setUserWindow(false);
-    },
+      if(message === "Delete SuccessFully"){
+        enqueueSnackbar(message,{
+          autoHideDuration: 2000,
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+          preventDuplicate: false,
+        });
+      }
+      else{
+        enqueueSnackbar(message, {
+          autoHideDuration: 2000,
+          variant: "error",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+          preventDuplicate: false,
+        });
+      }
+    }
   });
 
   const deletePostId = (id) => {
